@@ -9,7 +9,7 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-import Navbar from './Navbar';
+
 
 
 function Dashboard() {
@@ -28,7 +28,7 @@ function Dashboard() {
     const [successAlert, setSuccessAlert] = useState(false);
     const [error, setError] = useState("");
     const [track, setTrack] = useState("");
-    const [heading,setHeading]=useState("Add New Data");
+    const [heading, setHeading] = useState("Add New Data");
 
 
 
@@ -141,15 +141,9 @@ function Dashboard() {
         setDetails(sortedDetails);
     };
 
-
-
-
-
-
-
     return (
         <div>
-            <Navbar />
+            <h5 className='heading'>Project Management DashBoard</h5>
             <div className='alert-div'>
                 <Alert variant="warning" className='alert'>
                     Project Track : <strong>{track}</strong>

@@ -33,7 +33,7 @@ code {
 }
 
 .alert-div{
-  margin:20px 10px;
+  margin:20px;
   height: 50px;
 }
 
@@ -50,4 +50,23 @@ code {
   display: flex;
   margin:20px 0px
 }
+
+.heading{
+  margin: 20px;
+  color: rgb(37, 181, 217);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
