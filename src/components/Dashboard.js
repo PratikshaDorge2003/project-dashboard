@@ -9,10 +9,11 @@ import Dropdown from "react-bootstrap/Dropdown";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import Sidebar from './SideBar';
 
 
 
-function Dashboard() {
+function Dashboard({ projectNumber }) {
     const dispatch = useDispatch();
     const data = useSelector((state) => state.data.data);
     const [details, setDetails] = useState([]);
@@ -33,8 +34,10 @@ function Dashboard() {
 
 
     useEffect(() => {
-        dispatch(fetchUserData());
-    }, [dispatch]);
+        if (projectNumber) {
+            dispatch(fetchUserData(projectNumber));
+        }
+    }, [dispatch, projectNumber]);
 
     useEffect(() => {
         setDetails(data);
@@ -73,12 +76,12 @@ function Dashboard() {
             };
 
             if (flag === true) {
-                const result = await axiosInstance.post("/data", formData);
+                const result = await axiosInstance.post(`/data${projectNumber}`, formData);
             }
             if (flag === false) {
-                const result = await axiosInstance.patch(`/data/${uniqueId}`, formData);
+                const result = await axiosInstance.patch(`/data${projectNumber}/${uniqueId}`, formData);
             }
-            dispatch(fetchUserData());
+            dispatch(fetchUserData(projectNumber));
             setSuccessAlert(true);
             setTimeout(() => setSuccessAlert(false), 2000);
             handleCloseModal();
@@ -88,7 +91,7 @@ function Dashboard() {
 
     const delFunction = async (id) => {
         try {
-            await axiosInstance.delete(`/data/${id}`);
+            await axiosInstance.delete(`/data${projectNumber}/${id}`);
             dispatch(fetchUserData());
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 2000);
@@ -143,7 +146,6 @@ function Dashboard() {
 
     return (
         <div>
-            <h5 className='heading'>Project Management DashBoard</h5>
             <div className='alert-div'>
                 <Alert variant="warning" className='alert'>
                     Project Track : <strong>{track}</strong>
@@ -240,24 +242,47 @@ function Dashboard() {
                         </tr>
                     </thead>
                     <tbody>
-                        {details.map((val) => (
-                            <tr key={val.id}>
-                                <th scope="row">{val.title}</th>
-                                <td>{val.description}</td>
-                                <td>{val.dueDate}</td>
-                                <td>{val.priority}</td>
-                                <td>{val.status}</td>
-                                <td>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash-fill" viewBox="0 0 16 16" onClick={() => delFunction(val.id)}>
-                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
-                                    </svg>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-file-earmark-minus-fill" viewBox="0 0 16 16" onClick={() => updateFunction(val)}>
-                                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6 8.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1 0-1" />
-                                    </svg>
-                                </td>
+                        {details && details.length > 0 ? (
+                            details.map((val) => (
+                                <tr key={val.id}>
+                                    <th scope="row">{val.title}</th>
+                                    <td>{val.description}</td>
+                                    <td>{val.dueDate}</td>
+                                    <td>{val.priority}</td>
+                                    <td>{val.status}</td>
+                                    <td>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            className="bi bi-trash-fill"
+                                            viewBox="0 0 16 16"
+                                            onClick={() => delFunction(val.id)}
+                                        >
+                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
+                                        </svg>
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            className="bi bi-file-earmark-minus-fill"
+                                            viewBox="0 0 16 16"
+                                            onClick={() => updateFunction(val)}
+                                        >
+                                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M6 8.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1 0-1" />
+                                        </svg>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="6">No data available</td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
+
                 </table>
             </div>
         </div>

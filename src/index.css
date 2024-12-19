@@ -55,6 +55,11 @@ code {
   margin: 20px;
   color: rgb(37, 181, 217);
 }
+.list-group-item:hover {
+  background-color: blue !important;
+  color: white;
+  cursor: pointer;
+}
 
 
 

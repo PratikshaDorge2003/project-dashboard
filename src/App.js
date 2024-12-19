@@ -9,6 +9,7 @@ import {
 import Dashboard from './components/Dashboard';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import Sidebar from './components/SideBar';
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-           <Route path="/" element={<Dashboard/>}/>
+           {/* <Route path="/" element={<Dashboard/>}/> */}
+           <Route path="/" element={<Sidebar/>} />
         </Routes>
       </Router>
     

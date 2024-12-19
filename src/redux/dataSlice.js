@@ -3,10 +3,15 @@ import axiosInstance from '../components/axiosInstance';
 
 
 
-export const fetchUserData = createAsyncThunk('user/fetchUserData', async () => {
-  const response = await axiosInstance.get("/data");
-  return response.data;
-});
+
+
+export const fetchUserData = createAsyncThunk(
+  'user/fetchUserData',
+  async (projectNumber) => {
+    const response = await axiosInstance.get(`/data${projectNumber}`); 
+    return response.data;
+  }
+);
 
 const initialState = {
   data: [],
