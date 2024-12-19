@@ -92,7 +92,7 @@ function Dashboard({ projectNumber }) {
     const delFunction = async (id) => {
         try {
             await axiosInstance.delete(`/data${projectNumber}/${id}`);
-            dispatch(fetchUserData());
+            dispatch(fetchUserData(projectNumber));
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 2000);
 
